@@ -1,0 +1,2 @@
+recursive-include global_floods_django_app/static *
+recursive-include global_floods_django_app/templates *
