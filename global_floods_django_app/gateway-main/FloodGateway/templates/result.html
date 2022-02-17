@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Flooding Monitor Gateway</title>
+    <style>
+    a:link{color:black;}
+    a:visited{color:black;}
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Global Flooding Monitor Gateway!</h1>
+  <p> Gateway details </p>
+  <form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+        <h2>Please choose pre-event date and post-event date</h2>
+        <br>
+        Pre-event date:<input type="date" name="pre-event"><br>
+        Post-event date:<input type="date" name="post-event"><br>
+        <h2>Run the prediction model may need some time, is that OK?</h2>
+        <br>
+        <input type="submit" name = 'yes' value="OK, I can wait">
+    </form>
+    <a href = "{% url 'index' %}" ><button>No, back to main page</button></a>
+  <div class="map">
+  {{ map|safe }}
+  </div>
+</body>
+</html>

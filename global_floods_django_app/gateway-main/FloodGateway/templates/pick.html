@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Flooding Monitor Gateway</title>
+    <style>
+    a:link{color:black;}
+    a:visited{color:black;}
+  </style>
+
+</head>
+<body>
+  <h1>Welcome to the Global Flooding Monitor Gateway!</h1>
+  <p> Gateway details </p>
+  <div>
+    <a href = "{% url 'pick' %}"><button>Pick event via MoM track2</button></a>
+    <a href = "{% url 'draw' %}"><button>Draw interested area by mouse</button></a>
+    <a href = "{% url 'upload' %}"><button>Upload GeoJson file to set interested area</button></a>
+  </div>
+  <div class="map">
+  {{ map|safe }}
+  </div>
+  <a href = "{% url 'result' %}"><button>Run Model</button></a>
+</body>
+</html>

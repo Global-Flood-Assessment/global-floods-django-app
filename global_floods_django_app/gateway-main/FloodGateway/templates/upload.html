@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Flooding Monitor Gateway</title>
+    <style>
+    a:link{color:black;}
+    a:visited{color:black;}
+  </style>
+</head>
+<body>
+  <h1>Welcome to the Global Flooding Monitor Gateway!</h1>
+  <p> Gateway details </p>
+  <div>
+    <a href = "{% url 'pick' %}"><button>Pick event via MoM track2</button></a>
+    <a href = "{% url 'draw' %}"><button>Draw interested area by mouse</button></a>
+    <a href = "{% url 'upload' %}"><button>Upload GeoJson file to set interested area</button></a>
+  </div>
+  <form method="post" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+        <h2>Please upload geojson file and choose pre-event date and post-event date</h2>
+        <br>
+        Pre-event date:<input type="date" name="pre-event"><br>
+        Post-event date:<input type="date" name="post-event"><br>
+        Please upload Geojson file for your interested area; <br>
+        <input type="file" accept=".geojson" name="myfile"><br>
+        <input type="submit" value="upload" name = "ufile">
+        <div class="map">
+        {{ map|safe }}
+        </div>
+    </form>
+    <a href = "{% url 'result' %}"><button>Run Model</button></a>
+
+</body>
+</html>
