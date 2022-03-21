@@ -10,12 +10,15 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to the Global Flooding Monitor Gateway!</h1>
-  <p> Gateway details </p>
+  <h1>Welcome to the Global Flooding Impact Monitoring Gateway!</h1>
+  <p> Welcom to the Global Flooding Impact Monitoring Gateway, here you can use the GloFIM Apps to predict the flooding affection.</p>
   <div>
-    <a href = "{% url 'pick' %}"><button>Pick event via MoM track2</button></a>
-    <a href = "{% url 'draw' %}"><button>Draw interested area by mouse</button></a>
-    <a href = "{% url 'upload' %}"><button>Upload GeoJson file to set interested area</button></a>
+    <h2>Low resolusion impact monitoring</h2><br>
+    <a href = "{% url 'global_floods_django_app:pick' %}"><button>Connecting to MoM track2 Output</button></a>
+    <a href = "{% url 'global_floods_django_app:draw' %}"><button>User-defined: Polygon</button></a>
+    <a href = "{% url 'global_floods_django_app:upload' %}"><button>User-defined: GeoJson</button></a>
+    <br>
+    <h2>High resolusion impact monitoring</h2>
   </div>
   <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
@@ -23,14 +26,18 @@
         <br>
         Pre-event date:<input type="date" name="pre-event"><br>
         Post-event date:<input type="date" name="post-event"><br>
-        Please upload Geojson file for your interested area; <br>
+        Please upload Geojson file for your area of interested; <br>
         <input type="file" accept=".geojson" name="myfile"><br>
         <input type="submit" value="upload" name = "ufile">
+        {% if result %}
+          <p><input type="submit" value="Download Result" name = "download"></p>
+        {% else %}
+          <p><input type="submit" value="Run Model" name = "run-model"></p>
+        {% endif %}
         <div class="map">
         {{ map|safe }}
         </div>
     </form>
-    <a href = "{% url 'result' %}"><button>Run Model</button></a>
 
 </body>
 </html>

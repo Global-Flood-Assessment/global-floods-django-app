@@ -16,7 +16,9 @@ Including another URLconf
 
 from django.urls import path
 from django.contrib import admin
-from MainPage import views
+from . import views
+
+app_name = 'global_floods_django_app'
 
 urlpatterns = [
   path('', views.index, name="index"),

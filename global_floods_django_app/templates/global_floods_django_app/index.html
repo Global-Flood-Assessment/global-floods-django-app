@@ -10,12 +10,15 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to the Global Flooding Monitor Gateway!</h1>
-  <p> Gateway details </p>
+  <h1>Welcome to the Global Flooding Impact Monitoring Gateway!</h1>
+  <p> Welcom to the Global Flooding Impact Monitoring Gateway, here you can use the GloFIM Apps to predict the flooding affection.</p>
   <div>
-    <a href = "{% url 'pick' %}"><button>Pick event via MoM track2</button></a>
-    <a href = "{% url 'draw' %}"><button>Draw interested area by mouse</button></a>
-    <a href = "{% url 'upload' %}"><button>Upload GeoJson file to set interested area</button></a>
+    <h2>Low resolusion impact monitoring</h2><br>
+    <a href = "{% url 'global_floods_django_app:pick' %}"><button>Connecting to MoM track2 Output</button></a>
+    <a href = "{% url 'global_floods_django_app:draw' %}"><button>User-defined: Polygon</button></a>
+    <a href = "{% url 'global_floods_django_app:upload' %}"><button>User-defined: GeoJson</button></a>
+    <br>
+    <h2>High resolusion impact monitoring</h2>
   </div>
   <div class="map">
   {{ map|safe }}
