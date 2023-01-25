@@ -48,7 +48,11 @@ INSTALLED_APPS = [
     'floppyforms',
     'django_tables2',
     'leaflet',
+    'jinja2',
+    'matplotlib',
+    'sentinelsat'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -64,16 +68,11 @@ ROOT_URLCONF = 'FloodGateway.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(django.__file__), "forms/templates/")],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
+    'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    'DIRS': [],
+    'APP_DIRS': True,
+    'OPTIONS': {
+        'environment': 'jinja2.environment',
         },
     },
 ]
@@ -121,7 +120,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+   os.path.join(BASE_DIR, 'global_floods_django_app/static/')
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

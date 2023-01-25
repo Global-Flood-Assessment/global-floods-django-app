@@ -20,6 +20,13 @@
     <br>
     <h2>High resolusion impact monitoring</h2>
   </div>
+  {% if messages %}
+       <script>
+           {% for msg in messages %}
+               alert('{{ msg.message }}');
+           {% endfor %}
+       </script>
+   {% endif %}
   <form method="post" action="" enctype="multipart/form-data">
     {% csrf_token %}
         <h2>Please upload geojson file and choose pre-event date and post-event date</h2>

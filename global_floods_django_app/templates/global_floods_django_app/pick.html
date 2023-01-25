@@ -20,16 +20,29 @@
     <br>
     <h2>High resolusion impact monitoring</h2>
   </div>
+  {% if messages %}
+       <script>
+           {% for msg in messages %}
+               alert('{{ msg.message }}');
+           {% endfor %}
+       </script>
+   {% endif %}
+
   <div class="map">
     <form method="post" action="">
         {% csrf_token %}
         <h3>Please choose the date for MoM track2 output file</h3>
         <br>
-        the date for MoM track2 output file: <input type="date" name="mom">
-        <p><input type="submit" value="Submit" name = "mom_date"></p>
+        the date for MoM track2 output file:<br>
+        Pre-event date:<input type="date" name="pre-event"><br>
+        Post-event date:<input type="date" name="post-event"><br>
         Please click your interested event from the left map and details will show in right map; <br>
         {{ map|safe }}
-        <p><input type="submit" value="Run Model" name = "run-model"></p>
+        {% if result %}
+          <p><input type="submit" value="Download Result" name = "download"></p>
+        {% else %}
+          <p><input type="submit" value="Run Model" name = "run-model"></p>
+        {% endif %}
       </form>
   </div>
 </body>

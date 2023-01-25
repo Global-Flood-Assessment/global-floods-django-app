@@ -94,8 +94,8 @@ def get_ndwi(data):
     flag = np.where(denominator==0,0,1)
     band = flag*(molecule / (denominator+1e-6))
     return band
-create_model('mom_track3')
-PATH = 'mom_track3'
+# create_model('mom_track3')
+# PATH = 'mom_track3'
 # create MD model based on sample tiff file
 def create_model(PATH):
     knn = KNeighborsClassifier(n_neighbors=1)
@@ -236,7 +236,7 @@ def classification(footprint,cloud_coverage,start,end):
     band_mask = rasterio.open(PATH+'/geo_tiff/'+date+'cutted.tif', "w", **out_meta)
     band_mask.write(out_image)
     #model = create_model()
-    model = load_model(PATH+'/saved_model/MD.model')
+    model = load_model(PATH+'/saved_model/MD_model.txt')
 
     # calculate NDVI & MDWI band for each file
     os.rm('union.tif')

@@ -13,6 +13,9 @@ from .models import *
 import json
 from django.contrib import messages
 from django_tables2.tables import Table
+import os
+import jinja2
+import shapely
 
 s_date=''
 e_date=''
@@ -26,31 +29,55 @@ def index(request):
     return render(request, 'global_floods_django_app/index.html', context)
 
 def pick(request):
-    map = pick_map()
+    map,df = pick_map()
     m = map._repr_html_()
     context = {'map': m}
+    if request.method == "POST":
+        if 'run-model' in request.POST:
+            lat = request.COOKIES.get('lat')
+            lng = request.COOKIES.get('lng')
+            pfaf = df.loc[(df['Lat']==float(lat)) & (df['Lon']==float(lng))]
+            if len(pfaf) >1:
+                pfaf = pfaf.iloc[0]
+            sim_geo = gpd.GeoSeries(pfaf['geometry_y']).simplify(tolerance=0.001)
+            geo_j = sim_geo.to_json()
+            s_date = request.POST.get("pre-event")
+            e_date = request.POST.get("post-event")
+            if s_date <= e_date:
+                messages.error(request,'Please fill both pre-event and post-event date! Also please make sure pre is befor after!')
+            # pred(s_date, e_date, poly=geo_j)
+            return render(request, 'global_floods_django_app/pick.html',context)
+        elif 'download' in request.POST:
+            x = 1
     return render(request, 'global_floods_django_app/pick.html', context)
 
 def draw(request):
-    form = OSmapForm()
+    map = draw_map()
+    m = map._repr_html_()
+    context = {'map': m}
     if request.method == "POST":
         if 'run-model' in request.POST:
-            poly = request.POST.get('poly')
-            context = {'alert_flag':True,'form':form,'result':True}
-
+            geo_info = request.COOKIES.get('geometry')
+            s_date = request.POST.get("pre-event")
+            e_date = request.POST.get("post-event")
+            if s_date <= e_date:
+                messages.error(request,'Please fill both pre-event and post-event date! Also please make sure pre is befor after!')
+            # pred(s_date, e_date, poly=geo_info)
             return render(request, 'global_floods_django_app/draw.html',context)
-    return render(request, 'global_floods_django_app/draw.html', {'form': form})
+        elif 'download' in request.POST:
+            x=1
+    return render(request, 'global_floods_django_app/draw.html', context)
 
 def upload(request):
     global poly
     context = {'map':'null'}
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    TEMP_FILE = os.path.join(BASE_DIR, "global_floods_django_app", "temp_file", "footprint.geojson")
+    TEMP_FILE = os.path.join(BASE_DIR, "global_floods_django_app", "static/temp_file", "footprint.geojson")
     if request.method == "POST":
         if 'ufile' in request.POST:
             File = request.FILES.get("myfile",None)
             if File is None:
-                return HttpResponse("There is no chosen file ")
+                messages.error(request,"There is no chosen file ")
             else:
                 with open(TEMP_FILE, 'wb+') as f:
                     for chunk in File.chunks():
@@ -60,7 +87,14 @@ def upload(request):
             context = {'map': m}
             return render(request, 'global_floods_django_app/upload.html', context)
         elif 'run-model' in request.POST:
-            return render(request, 'global_floods_django_app/result.html',{'alert_flag': True})
+            s_date = request.POST.get("pre-event")
+            e_date = request.POST.get("post-event")
+            if s_date <= e_date:
+                messages.error(request,'Please fill both pre-event and post-event date! Also please make sure pre is befor after!')
+            # pred(s_date, e_date, poly=None)
+            return render(request, 'global_floods_django_app/upload.html', context)
+        elif 'download' in request.POST:
+            x=1
     return render(request, 'global_floods_django_app/upload.html')
 
 def result(request):

@@ -12,7 +12,7 @@
   {{ form.media }}
 </head>
 <body>
-  <h1>Welcome to the Global Flooding Impact Monitoring Gateway!</h1>
+  <h1 id="test">Welcome to the Global Flooding Impact Monitoring Gateway!</h1>
   <p> Welcom to the Global Flooding Impact Monitoring Gateway, here you can use the GloFIM Apps to predict the flooding affection.</p>
   <div>
     <h2>Low resolusion impact monitoring</h2><br>
@@ -22,22 +22,32 @@
     <br>
     <h2>High resolusion impact monitoring</h2>
   </div>
+  {% if messages %}
+       <script>
+           {% for msg in messages %}
+               alert('{{ msg.message }}');
+           {% endfor %}
+       </script>
+   {% endif %}
   <div class="map">
-    <form method="post" action="" target="_blank">
+    <form id = "geometry" method="post" action="">
         {% csrf_token %}
-        <h2>Please choose pre-event date and post-event date</h2>
+        <h3>Please choose the date for flooding date</h3>
         <br>
+        the date for drawed area:<br>
         Pre-event date:<input type="date" name="pre-event"><br>
         Post-event date:<input type="date" name="post-event"><br>
-        Please draw a polygon for area of interested; <br>
-        {{ form.as_p }}
+        Please draw your interested area and click "submit" button <br>
+        <div name="poly">
+        {{ map|safe }}
+        </div>
         {% if result %}
           <p><input type="submit" value="Download Result" name = "download"></p>
         {% else %}
           <p><input type="submit" value="Run Model" name = "run-model"></p>
         {% endif %}
-
-      </form>
+    </form>
   </div>
 </body>
+<script src="js/script.js" type="text/javascript"></script>
 </html>
