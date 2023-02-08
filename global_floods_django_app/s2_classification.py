@@ -10,7 +10,7 @@ import os, shutil
 from glob import glob
 import xml.dom.minidom
 from sentinelsat import SentinelAPI, read_geojson, geojson_to_wkt
-from gdalconst import *
+# from gdalconst import *
 from geopandas import *
 import rasterio as rio
 import rasterio.mask
